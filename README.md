@@ -1,54 +1,79 @@
-# Rotación de Matriz - Aplicación Next.js
+# THE MATRIX ROTATOR
 
-Esta aplicación rota matrices cuadradas de NxN en sentido anti-horario (90 grados). Desarrollada con Next.js 15 y TypeScript.
+Es un reto tecnico par Delosi, el objetivo es aplicar logica para rotar una matriz numerica NxN.
 
 ## Características
 
-- Rotación de matrices cuadradas NxN en sentido anti-horario (90 grados)
-- Validación de entrada para matrices válidas
-- Manejo de errores
-- Soporte para matrices de cualquier dimensión NxN (2x2, 3x3, 4x4, etc.)
-- Interfaz de usuario intuitiva para ingresar y visualizar matrices
+- **Rotación de Matrices**: Rotación en sentido horario y antihorario
+- **Generación Aleatoria**: Botón para generar arreglos numéricos aleatorios
+- **Formateo Automático**: Los arreglos se embellecen automáticamente con indentación
+- **Efecto Matrix**: Lluvia de código animada como fondo ([inspirado en este repositorio](https://github.com/andresz74/matrix))
+- **Control de Fondo**: Opción para desactivar el efecto Matrix y usar fondo de fallback
+- **Historial**: Guarda y recupera matrices procesadas
+- **Responsive**: Funciona en dispositivos móviles y desktop
+- **Animaciones**: Transiciones suaves y efectos visuales
+- **Tema Matrix**: Diseño inspirado en la película Matrix
 
-## Demostración
+## Tecnologías
 
-### Ejemplos de Rotación
+- **Next.js 15** - Framework React
+- **TypeScript** - Tipado estático
+- **Tailwind CSS** - Estilos
+- **Jest** - Testing
+- **React Testing Library** - Tests de componentes
 
-**Matriz 2x2:**
+## Uso
 
-```
-Input: [[1,2], [3,4]]
-Output: [[2,4], [1,3]]
-```
+1. **Ingresa una matriz** en formato JSON: `[[1,2],[3,4]]`
+2. **Presiona "Generar"** para rotar la matriz
+3. **Usa "Píldora Roja"** para generar una matriz aleatoria
+4. **Revisa el historial** para recuperar matrices anteriores
+5. **Controla el efecto Matrix** con el botón PAUSE/PLAY
 
-**Matriz 3x3:**
-
-```
-Input: [[1,2,3], [4,5,6], [7,8,9]]
-Output: [[3,6,9], [2,5,8], [1,4,7]]
-```
-
-## Pruebas Unitarias
-
-El proyecto incluye pruebas unitarias para verificar el correcto funcionamiento del algoritmo de rotación:
+## Testing
 
 ```bash
-npm run test
-# o
-yarn test
+# Ejecutar todos los tests
+npm test
+
+# Ejecutar con cobertura
+npm test -- --coverage
+
+# Ejecutar tests específicos
+npm test -- --testPathPattern="matrix"
 ```
 
-Las pruebas incluyen:
+## Cobertura de Tests
 
-- Rotación de matrices 2x2
-- Rotación de matrices 3x3
-- Manejo de matrices vacías
-- Validación de matrices no cuadradas
+- **Servicios**: 100% cobertura
+- **Hooks**: 100% cobertura
+- **Componentes**: 80% cobertura
+- **Total**: 77% cobertura
 
-## Tecnologías Utilizadas
+## Estructura del Proyecto
 
-- **Next.js 15**: Framework de React
-- **TypeScript**: Tipado para JavaScript
-- **TailwindCSS**: Framework CSS
-- **Jest**: Framework de pruebas
-- **React Testing Library**: Utilidades para pruebas de componentes React
+Este proyecto está diseñado siguiendo principios de **código limpio** y un **patrón basado en funcionalidades**. La arquitectura se organiza en features independientes, donde cada funcionalidad agrupa sus componentes, hooks, servicios y tests relacionados. Esta aproximación facilita el mantenimiento, la escalabilidad y la separación de responsabilidades, permitiendo que cada feature sea autónoma y reutilizable.
+
+## Scripts Disponibles
+
+- `npm run dev` - Servidor de desarrollo
+- `npm run build` - Construcción para producción
+- `npm run start` - Servidor de producción
+- `npm run lint` - Linting del código
+- `npm test` - Ejecutar tests
+
+## Sobre el Tema Matrix
+
+La elección del tema Matrix se debe al hecho de trabajar con arreglos numéricos (matrices) así que ¿qué mejor manera de visualizar la manipulación de datos que con el efecto de lluvia?. Así una operación matemática aparentemente simple se convierte en una "manipulación de la realidad" - aunque sea solo de números.
+
+---
+
+## Desarrollado para Delosi
+
+**Prueba técnica para Delosi** por **fantezan** - 2025
+
+## Agradecimientos
+
+- **Efecto Matrix**: Inspirado en el repositorio [andresz74/matrix](https://github.com/andresz74/matrix) de [Andres Zenteno](https://github.com/andresz74)
+- **Next.js**: Framework React para la aplicación
+- **Tailwind CSS**: Para el diseño y estilos

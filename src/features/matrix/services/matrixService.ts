@@ -1,8 +1,5 @@
 import { Matrix } from "@/domain/matrix";
 
-/**
- * Custom Error class for specific validation errors within the domain.
- */
 export class MatrixValidationError extends Error {
   constructor(message: string) {
     super(message);
@@ -10,18 +7,11 @@ export class MatrixValidationError extends Error {
   }
 }
 
-/**
- * Parses and validates a string input into a square (NxN) matrix of numbers.
- * @param {string} input - The string to parse, e.g., "[[1,2],[3,4]]".
- * @returns {number[][]} The validated NxN matrix.
- * @throws {MatrixValidationError} If the input is invalid.
- */
 export const parseAndValidateMatrix = (input: string): Matrix<number> => {
   let parsed: unknown;
   try {
     parsed = JSON.parse(input);
-  } catch (error) {
-    console.error(error);
+  } catch {
     throw new MatrixValidationError(
       "El formato de entrada no es un JSON válido. Asegúrate de usar corchetes y comas, ej: [[1,2],[3,4]]"
     );
@@ -54,27 +44,19 @@ export const parseAndValidateMatrix = (input: string): Matrix<number> => {
   return parsed as Matrix<number>;
 };
 
-/**
- * Rotates a square (NxN) matrix 90 degrees anti-clockwise.
- * This function assumes the matrix has already been validated.
- * @param {number[][]} matrix - The NxN matrix to rotate.
- * @returns {number[][]} The new matrix rotated anti-clockwise.
- */
+// Logica de Rotación 90° antihorario
 export const rotateMatrix = (matrix: Matrix<number>): Matrix<number> => {
   if (!matrix || matrix.length === 0) {
     return [];
   }
 
   const n = matrix.length;
-  // Create a new matrix filled with zeros to store the result
   const rotatedMatrix: Matrix<number> = Array.from({ length: n }, () =>
     Array(n).fill(0)
   );
 
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
-      // New row index is (n - 1 - j)
-      // New column index is i
       rotatedMatrix[n - 1 - j][i] = matrix[i][j];
     }
   }

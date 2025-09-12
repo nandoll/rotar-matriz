@@ -1,48 +1,118 @@
 "use client";
 
-import MatrixInput from "@/features/matrix/components/MatrixInput";
-import MatrixDisplay from "@/features/matrix/components/MatrixDisplay";
-import { useMatrixRotation } from "@/features/matrix/hooks/useMatrixRotation";
+import { useMatrixRotationWithHistory } from "@/features/matrix/hooks/useMatrixRotationWithHistory";
+import EnhancedMatrixInput from "@/features/matrix/components/EnhancedMatrixInput";
+import MatrixHistory from "@/features/matrix/components/MatrixHistory";
+import { AnimatedMatrixVisualization } from "@/features/matrix/components/AnimatedMatrixVisualization";
+import MatrixBackground from "@/components/MatrixBackground";
+import MatrixToggle from "@/components/MatrixToggle";
+import { useState } from "react";
 
-export default function MatrixPage() {
-  const { input, setInput, originalMatrix, rotatedMatrix, error } = useMatrixRotation();
+export default function Home() {
+  const [isMatrixActive, setIsMatrixActive] = useState(true);
+
+  const {
+    input,
+    setInput,
+    currentMatrix,
+    rotatedMatrix,
+    error,
+    history,
+    isProcessing,
+    generateRandomMatrix,
+    processMatrix,
+  } = useMatrixRotationWithHistory();
+
+  const handleGenerate = () => {
+    processMatrix();
+  };
+
+  const handleRandom = () => {
+    generateRandomMatrix();
+  };
+
+  const handleSelectHistory = (entry: { input: string }) => {
+    setInput(entry.input);
+  };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200">
-        Rotar Matriz en Sentido Anti-horario 🕛
-      </h1>
+    <div className="min-h-screen bg-black overflow-x-hidden relative">
+      {/* Fondo de imagen estático como fallback */}
+      <div
+        className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-500 ${
+          isMatrixActive ? "opacity-20" : "opacity-30"
+        }`}
+        style={{
+          backgroundImage: "url('/bg.webp')",
+        }}
+      ></div>
 
-      <MatrixInput input={input} setInput={setInput} error={error} />
+      {/* Efecto Matrix animado */}
+      <MatrixBackground isActive={isMatrixActive} />
 
-      {error && (
-        <div 
-          id="matrix-error" 
-          className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded"
-          role="alert"
-        >
-          {error}
+      {/* Gradiente de overlay para mejor legibilidad */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 bg-gradient-to-b from-green-500/5 via-black/20 to-green-900/5"></div>
+      </div>
+
+      {/* Control de Matrix Effect */}
+      <MatrixToggle isActive={isMatrixActive} onToggle={setIsMatrixActive} />
+
+      <div className="w-full px-4 py-8 pb-20 relative z-10">
+        <header className="text-center mb-10">
+          <h1 className="text-5xl font-bold mb-4 text-green-400 drop-shadow-[0_0_20px_rgba(74,222,128,0.6)] libre-baskerville-bold tracking-wider">
+            THE MATRIX ROTATOR
+          </h1>
+          <p className="text-green-300/70 max-w-2xl mx-auto text-lg font-mono">
+            Libera tu mente.
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 lg:grid-cols-[40%_58%] gap-4 lg:gap-[2%]">
+          {/* Columna 1: Input + Historial */}
+          <div className="flex flex-col gap-4 h-full">
+            {/* Panel de entrada */}
+            <div className="bg-black/10 backdrop-blur rounded-xl p-6 border border-green-500/30 shadow-[0_0_30px_rgba(34,197,94,0.2)]">
+              <EnhancedMatrixInput
+                value={input}
+                onChange={setInput}
+                onGenerate={handleGenerate}
+                onRandom={handleRandom}
+                error={error}
+                isProcessing={isProcessing}
+              />
+            </div>
+
+            {/* Panel de historial */}
+            {history.length > 0 && (
+              <div className="bg-black/10 backdrop-blur rounded-xl p-4 border border-green-500/30 shadow-[0_0_30px_rgba(34,197,94,0.2)] h-[400px] overflow-hidden">
+                <MatrixHistory
+                  history={history}
+                  onSelectEntry={handleSelectHistory}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Columna 2: Panel de Visualización */}
+          <div className="bg-black/5 backdrop-blur rounded-xl p-6 border border-green-500/30 shadow-[0_0_40px_rgba(34,197,94,0.2)]">
+            <AnimatedMatrixVisualization
+              originalMatrix={currentMatrix}
+              rotatedMatrix={rotatedMatrix}
+              isProcessing={isProcessing}
+            />
+          </div>
         </div>
-      )}
-
-      <div className="flex flex-col md:flex-row md:space-x-8">
-        <MatrixDisplay matrix={originalMatrix} title="Matriz Original" />
-        <MatrixDisplay matrix={rotatedMatrix} title="Matriz Rotada" />
       </div>
 
-      <div className="mt-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
-        <h2 className="font-medium mb-2 text-gray-800 dark:text-gray-200">Ejemplos:</h2>
-        <p className="mb-2 text-gray-700 dark:text-gray-300">
-          Ejemplo 2x2: <code className="bg-gray-200 dark:bg-gray-600 px-1 rounded">[[1,2],[3,4]]</code>
-        </p>
-        <p className="mb-2 text-gray-700 dark:text-gray-300">
-          Ejemplo 3x3: <code className="bg-gray-200 dark:bg-gray-600 px-1 rounded">[[1,2,3],[4,5,6],[7,8,9]]</code>
-        </p>
-        <p className="mb-2 text-gray-700 dark:text-gray-300">
-          Ejemplo 4x4:{" "}
-          <code className="bg-gray-200 dark:bg-gray-600 px-1 rounded">[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]</code>
-        </p>
-      </div>
+      {/* Footer fijo */}
+      <footer className="fixed bottom-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-sm border-t border-green-500/20">
+        <div className="text-center py-3">
+          <p className="text-green-500/60 text-sm font-mono">
+            {`<fantezan/>`} 2025
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

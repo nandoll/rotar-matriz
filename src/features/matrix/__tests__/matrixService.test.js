@@ -1,4 +1,8 @@
-import { rotateMatrix, parseAndValidateMatrix, MatrixValidationError } from "../src/features/matrix/services/matrixService";
+import {
+  rotateMatrix,
+  parseAndValidateMatrix,
+  MatrixValidationError,
+} from "../services/matrixService";
 
 describe("rotateMatrix", () => {
   test("debe rotar una matriz 2x2 correctamente", () => {
