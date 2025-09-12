@@ -2,59 +2,58 @@ import { renderHook, act } from '@testing-library/react';
 import { useMatrixRotation } from '../src/features/matrix/hooks/useMatrixRotation';
 
 describe('useMatrixRotation', () => {
-  test('debe inicializar con valores nulos', () => {
+  test('debe inicializar con valores por defecto', () => {
     const { result } = renderHook(() => useMatrixRotation());
     
-    expect(result.current.inputMatrix).toBeNull();
-    expect(result.current.rotatedMatrix).toBeNull();
+    expect(result.current.input).toBe('[[1,2,3],[4,5,6],[7,8,9]]');
+    expect(result.current.originalMatrix).not.toBeNull();
+    expect(result.current.rotatedMatrix).not.toBeNull();
     expect(result.current.error).toBeNull();
   });
 
   test('debe rotar una matriz correctamente', () => {
-    const { result } = renderHook(() => useMatrixRotation());
-    const matrix = [
+    const { result } = renderHook(() => useMatrixRotation('[[1,2],[3,4]]'));
+    const expectedOriginal = [
       [1, 2],
       [3, 4],
     ];
-    const expected = [
+    const expectedRotated = [
       [2, 4],
       [1, 3],
     ];
 
-    act(() => {
-      result.current.rotateMatrix(matrix);
-    });
-
-    expect(result.current.inputMatrix).toEqual(matrix);
-    expect(result.current.rotatedMatrix).toEqual(expected);
+    expect(result.current.originalMatrix).toEqual(expectedOriginal);
+    expect(result.current.rotatedMatrix).toEqual(expectedRotated);
     expect(result.current.error).toBeNull();
   });
 
-  test('debe manejar matrices nulas', () => {
-    const { result } = renderHook(() => useMatrixRotation());
+  test('debe manejar errores en la entrada', () => {
+    const { result } = renderHook(() => useMatrixRotation('entrada inválida'));
 
-    act(() => {
-      result.current.rotateMatrix(null);
-    });
-
-    expect(result.current.inputMatrix).toBeNull();
+    expect(result.current.originalMatrix).toBeNull();
     expect(result.current.rotatedMatrix).toBeNull();
-    expect(result.current.error).toBeNull();
+    expect(result.current.error).not.toBeNull();
   });
 
-  test('debe manejar errores en la rotación', () => {
+  test('debe actualizar la matriz cuando cambia la entrada', () => {
     const { result } = renderHook(() => useMatrixRotation());
-    const invalidMatrix = [
-      [1, 2, 3],
-      [4, 5, 6],
+
+    act(() => {
+      result.current.setInput('[[1,2],[3,4]]');
+    });
+
+    const expectedOriginal = [
+      [1, 2],
+      [3, 4],
+    ];
+    const expectedRotated = [
+      [2, 4],
+      [1, 3],
     ];
 
-    act(() => {
-      result.current.rotateMatrix(invalidMatrix);
-    });
-
-    expect(result.current.inputMatrix).toEqual(invalidMatrix);
-    expect(result.current.rotatedMatrix).toBeNull();
-    expect(result.current.error).toEqual("La matriz debe ser cuadrada (NxN)");
+    expect(result.current.input).toBe('[[1,2],[3,4]]');
+    expect(result.current.originalMatrix).toEqual(expectedOriginal);
+    expect(result.current.rotatedMatrix).toEqual(expectedRotated);
+    expect(result.current.error).toBeNull();
   });
 });

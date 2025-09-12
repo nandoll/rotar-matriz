@@ -2,40 +2,34 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import MatrixInput from '../src/features/matrix/components/MatrixInput';
 import MatrixDisplay from '../src/features/matrix/components/MatrixDisplay';
 
-// Mock para la función onMatrixChange
-const mockOnMatrixChange = jest.fn();
-
 describe('MatrixInput', () => {
+  const mockSetInput = jest.fn();
+
   beforeEach(() => {
-    mockOnMatrixChange.mockClear();
+    mockSetInput.mockClear();
   });
 
   test('debe renderizar el componente correctamente', () => {
-    render(<MatrixInput onMatrixChange={mockOnMatrixChange} />);
+    render(<MatrixInput input="[[1,2],[3,4]]" setInput={mockSetInput} error={null} />);
     
     expect(screen.getByLabelText(/Ingresa la matriz/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/Ejemplo: \[\[1,2\],\[3,4\]\]/i)).toBeInTheDocument();
   });
 
-  test('debe llamar a onMatrixChange con la matriz parseada', () => {
-    render(<MatrixInput onMatrixChange={mockOnMatrixChange} />);
+  test('debe llamar a setInput cuando cambia el textarea', () => {
+    render(<MatrixInput input="" setInput={mockSetInput} error={null} />);
     
     const textarea = screen.getByPlaceholderText(/Ejemplo: \[\[1,2\],\[3,4\]\]/i);
     fireEvent.change(textarea, { target: { value: '[[1,2],[3,4]]' } });
     
-    expect(mockOnMatrixChange).toHaveBeenCalledWith([
-      [1, 2],
-      [3, 4],
-    ]);
+    expect(mockSetInput).toHaveBeenCalledWith('[[1,2],[3,4]]');
   });
 
-  test('debe llamar a onMatrixChange con null para entrada inválida', () => {
-    render(<MatrixInput onMatrixChange={mockOnMatrixChange} />);
+  test('debe mostrar error visual cuando hay un error', () => {
+    render(<MatrixInput input="" setInput={mockSetInput} error="Error de prueba" />);
     
     const textarea = screen.getByPlaceholderText(/Ejemplo: \[\[1,2\],\[3,4\]\]/i);
-    fireEvent.change(textarea, { target: { value: 'entrada inválida' } });
-    
-    expect(mockOnMatrixChange).toHaveBeenCalledWith(null);
+    expect(textarea).toHaveClass('border-red-500');
   });
 });
 

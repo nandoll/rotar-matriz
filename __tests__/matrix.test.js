@@ -1,6 +1,6 @@
-import { rotateMatrixLeft } from "../src/features/matrix/services/matrixService";
+import { rotateMatrix, parseAndValidateMatrix, MatrixValidationError } from "../src/features/matrix/services/matrixService";
 
-describe("rotateMatrixLeft", () => {
+describe("rotateMatrix", () => {
   test("debe rotar una matriz 2x2 correctamente", () => {
     const input = [
       [1, 2],
@@ -11,7 +11,7 @@ describe("rotateMatrixLeft", () => {
       [1, 3],
     ];
 
-    const result = rotateMatrixLeft(input);
+    const result = rotateMatrix(input);
 
     expect(result).toEqual(expected);
   });
@@ -28,28 +28,63 @@ describe("rotateMatrixLeft", () => {
       [1, 4, 7],
     ];
 
-    const result = rotateMatrixLeft(input);
+    const result = rotateMatrix(input);
 
     expect(result).toEqual(expected);
-  });
-
-  test("debe lanzar un error si la matriz no es cuadrada", () => {
-    const input = [
-      [1, 2, 3],
-      [4, 5, 6],
-    ];
-
-    expect(() => {
-      rotateMatrixLeft(input);
-    }).toThrow("La matriz debe ser cuadrada (NxN)");
   });
 
   test("debe manejar matrices vacías", () => {
     const input = [];
     const expected = [];
 
-    const result = rotateMatrixLeft(input);
+    const result = rotateMatrix(input);
 
     expect(result).toEqual(expected);
+  });
+});
+
+describe("parseAndValidateMatrix", () => {
+  test("debe parsear y validar una matriz correctamente", () => {
+    const input = "[[1,2],[3,4]]";
+    const expected = [
+      [1, 2],
+      [3, 4],
+    ];
+
+    const result = parseAndValidateMatrix(input);
+
+    expect(result).toEqual(expected);
+  });
+
+  test("debe lanzar un error para JSON inválido", () => {
+    const input = "entrada inválida";
+
+    expect(() => {
+      parseAndValidateMatrix(input);
+    }).toThrow(MatrixValidationError);
+  });
+
+  test("debe lanzar un error para entrada que no es un array de arrays", () => {
+    const input = "[1,2,3]";
+
+    expect(() => {
+      parseAndValidateMatrix(input);
+    }).toThrow(MatrixValidationError);
+  });
+
+  test("debe lanzar un error para matriz no cuadrada", () => {
+    const input = "[[1,2,3],[4,5,6]]";
+
+    expect(() => {
+      parseAndValidateMatrix(input);
+    }).toThrow(MatrixValidationError);
+  });
+
+  test("debe lanzar un error para elementos no numéricos", () => {
+    const input = '[[1,2],["a",4]]';
+
+    expect(() => {
+      parseAndValidateMatrix(input);
+    }).toThrow(MatrixValidationError);
   });
 });

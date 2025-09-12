@@ -5,11 +5,7 @@ import MatrixDisplay from "@/features/matrix/components/MatrixDisplay";
 import { useMatrixRotation } from "@/features/matrix/hooks/useMatrixRotation";
 
 export default function MatrixPage() {
-  const { inputMatrix, rotatedMatrix, error, rotateMatrix } = useMatrixRotation<number>();
-
-  const handleMatrixChange = (matrix: number[][] | null) => {
-    rotateMatrix(matrix);
-  };
+  const { input, setInput, originalMatrix, rotatedMatrix, error } = useMatrixRotation();
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -17,16 +13,20 @@ export default function MatrixPage() {
         Rotar Matriz en Sentido Anti-horario 🕛
       </h1>
 
-      <MatrixInput onMatrixChange={handleMatrixChange} />
+      <MatrixInput input={input} setInput={setInput} error={error} />
 
       {error && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+        <div 
+          id="matrix-error" 
+          className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded"
+          role="alert"
+        >
           {error}
         </div>
       )}
 
       <div className="flex flex-col md:flex-row md:space-x-8">
-        <MatrixDisplay matrix={inputMatrix} title="Matriz Original" />
+        <MatrixDisplay matrix={originalMatrix} title="Matriz Original" />
         <MatrixDisplay matrix={rotatedMatrix} title="Matriz Rotada" />
       </div>
 

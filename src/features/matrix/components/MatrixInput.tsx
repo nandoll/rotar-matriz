@@ -2,57 +2,14 @@ import { useState, ChangeEvent } from "react";
 import { Matrix } from "@/domain/matrix";
 
 interface MatrixInputProps {
-  onMatrixChange: (matrix: Matrix<number> | null) => void;
+  input: string;
+  setInput: (value: string) => void;
+  error: string | null;
 }
 
-export default function MatrixInput({ onMatrixChange }: MatrixInputProps) {
-  const [input, setInput] = useState<string>("");
-
+export default function MatrixInput({ input, setInput, error }: MatrixInputProps) {
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setInput(value);
-
-    try {
-      const matrix = JSON.parse(value) as unknown;
-
-      // Validar que sea un array
-      if (!Array.isArray(matrix)) {
-        onMatrixChange(null);
-        return;
-      }
-
-      const n = matrix.length;
-
-      if (n === 0) {
-        onMatrixChange(null);
-        return;
-      }
-
-      for (let i = 0; i < n; i++) {
-        if (!Array.isArray(matrix[i])) {
-          onMatrixChange(null);
-          return;
-        }
-
-        if (matrix[i].length !== n) {
-          onMatrixChange(null);
-          return;
-        }
-
-        for (let j = 0; j < n; j++) {
-          if (typeof matrix[i][j] !== "number") {
-            onMatrixChange(null);
-            return;
-          }
-        }
-      }
-
-      // Si todo está bien, actualizar la matriz
-      onMatrixChange(matrix as Matrix<number>);
-    } catch (err) {
-      console.error("Error al parsear la matriz:", err);
-      onMatrixChange(null);
-    }
+    setInput(e.target.value);
   };
 
   return (
@@ -65,10 +22,14 @@ export default function MatrixInput({ onMatrixChange }: MatrixInputProps) {
       </label>
       <textarea
         id="matrix-input"
-        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+        className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 ${
+          error ? 'border-red-500' : 'border-gray-300'
+        }`}
         value={input}
         onChange={handleInputChange}
         placeholder="Ejemplo: [[1,2],[3,4]]"
+        aria-invalid={!!error}
+        aria-describedby={error ? "matrix-error" : undefined}
       />
       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
         La matriz debe ser cuadrada (NxN) y contener solo números.
