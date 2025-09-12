@@ -2,6 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  // Configuración para export estático
+  output: 'export',
+  trailingSlash: true,
+  images: {
+    unoptimized: true
+  },
   // Optimizaciones para producción
   compress: true,
   // Reducir uso de memoria
@@ -15,7 +21,7 @@ const nextConfig: NextConfig = {
     // Solo en producción
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
-        chunks: 'all',
+        chunks: "all",
         cacheGroups: {
           default: {
             minChunks: 2,
@@ -24,14 +30,14 @@ const nextConfig: NextConfig = {
           },
           vendor: {
             test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
+            name: "vendors",
             priority: -10,
-            chunks: 'all',
+            chunks: "all",
           },
         },
       };
     }
-    
+
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
