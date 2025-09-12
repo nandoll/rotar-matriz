@@ -1,4 +1,4 @@
-import { Matrix } from "@/types/matrix";
+import { Matrix } from "@/domain/matrix";
 
 interface MatrixDisplayProps {
   matrix: Matrix<number> | null;
@@ -11,9 +11,9 @@ export default function MatrixDisplay({ matrix, title }: MatrixDisplayProps) {
   }
 
   return (
-    <div className="mb-4">
-      <h3 className="text-lg font-medium mb-2">{title}</h3>
-      <div className="border rounded p-4 bg-gray-50">
+    <div className="mb-6">
+      <h3 className="text-lg font-medium mb-2 text-gray-800 dark:text-gray-200">{title}</h3>
+      <div className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
         <div className="grid grid-cols-1 gap-1">
           {matrix.map((row, rowIndex) => (
             <div key={rowIndex} className="flex space-x-2">
@@ -21,9 +21,9 @@ export default function MatrixDisplay({ matrix, title }: MatrixDisplayProps) {
                 <div
                   key={`${rowIndex}-${cellIndex}`}
                   title={cell.toString()}
-                  className="w-10 h-10 flex items-center justify-center border bg-white overflow-hidden"
+                  className="w-12 h-12 flex items-center justify-center border border-gray-300 bg-white dark:bg-gray-800 dark:border-gray-600 overflow-hidden"
                 >
-                  <span className="truncate text-center w-full px-1">
+                  <span className="truncate text-center w-full px-1 text-gray-800 dark:text-gray-200">
                     {cell}
                   </span>
                 </div>

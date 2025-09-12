@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react";
-import { Matrix } from "@/types/matrix";
+import { Matrix } from "@/domain/matrix";
 
 interface MatrixInputProps {
   onMatrixChange: (matrix: Matrix<number> | null) => void;
@@ -7,7 +7,6 @@ interface MatrixInputProps {
 
 export default function MatrixInput({ onMatrixChange }: MatrixInputProps) {
   const [input, setInput] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -18,9 +17,6 @@ export default function MatrixInput({ onMatrixChange }: MatrixInputProps) {
 
       // Validar que sea un array
       if (!Array.isArray(matrix)) {
-        setError(
-          "La entrada debe ser un array de arrays, por ejemplo: [[1,2],[3,4]]"
-        );
         onMatrixChange(null);
         return;
       }
@@ -28,27 +24,23 @@ export default function MatrixInput({ onMatrixChange }: MatrixInputProps) {
       const n = matrix.length;
 
       if (n === 0) {
-        setError("La matriz no puede estar vacía");
         onMatrixChange(null);
         return;
       }
 
       for (let i = 0; i < n; i++) {
         if (!Array.isArray(matrix[i])) {
-          setError(`La fila ${i + 1} no es un array`);
           onMatrixChange(null);
           return;
         }
 
         if (matrix[i].length !== n) {
-          setError(`La matriz debe ser cuadrada (${n}x${n})`);
           onMatrixChange(null);
           return;
         }
 
         for (let j = 0; j < n; j++) {
           if (typeof matrix[i][j] !== "number") {
-            setError(`El elemento en [${i},${j}] no es un número`);
             onMatrixChange(null);
             return;
           }
@@ -56,28 +48,31 @@ export default function MatrixInput({ onMatrixChange }: MatrixInputProps) {
       }
 
       // Si todo está bien, actualizar la matriz
-      setError(null);
       onMatrixChange(matrix as Matrix<number>);
     } catch (err) {
       console.error("Error al parsear la matriz:", err);
-      setError("Formato JSON inválido");
       onMatrixChange(null);
     }
   };
 
   return (
-    <div className="mb-4">
-      <label htmlFor="matrix-input" className="block text-sm font-medium mb-2">
+    <div className="mb-6">
+      <label 
+        htmlFor="matrix-input" 
+        className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
+      >
         Ingresa la matriz de tipo NxN (Ej: [[1,2],[3,4]]):
       </label>
       <textarea
         id="matrix-input"
-        className="w-full p-2 border rounded min-h-[100px]"
+        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
         value={input}
         onChange={handleInputChange}
         placeholder="Ejemplo: [[1,2],[3,4]]"
       />
-      {error && <p className="mt-1 text-red-500 text-sm">{error}</p>}
+      <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        La matriz debe ser cuadrada (NxN) y contener solo números.
+      </p>
     </div>
   );
 }

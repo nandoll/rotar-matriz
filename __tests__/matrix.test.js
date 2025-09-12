@@ -1,4 +1,4 @@
-import { rotateMatrixLeft } from "@/types/matrix";
+import { rotateMatrixLeft } from "../src/features/matrix/services/matrixService";
 
 describe("rotateMatrixLeft", () => {
   test("debe rotar una matriz 2x2 correctamente", () => {
@@ -41,7 +41,7 @@ describe("rotateMatrixLeft", () => {
 
     expect(() => {
       rotateMatrixLeft(input);
-    }).toThrow("La matriz debe ser cuadrada");
+    }).toThrow("La matriz debe ser cuadrada (NxN)");
   });
 
   test("debe manejar matrices vacías", () => {

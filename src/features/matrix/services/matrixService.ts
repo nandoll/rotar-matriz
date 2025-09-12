@@ -1,4 +1,4 @@
-export type Matrix<T> = T[][];
+import { Matrix } from "@/domain/matrix";
 
 /**
  * Rota una matriz cuadrada NxN en sentido anti-horario (90 grados)
