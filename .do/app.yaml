@@ -1,0 +1,23 @@
+name: matrix-rotator
+services:
+- name: web
+  source_dir: /
+  github:
+    repo: nandoll/rotar-matriz
+    branch: main
+  run_command: npm start
+  environment_slug: node-js
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  envs:
+  - key: NODE_ENV
+    value: production
+  - key: NODE_OPTIONS
+    value: --max-old-space-size=4096
+  health_check:
+    http_path: /
+    initial_delay_seconds: 10
+    period_seconds: 10
+    timeout_seconds: 5
+    success_threshold: 1
+    failure_threshold: 3
