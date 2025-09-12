@@ -9,7 +9,7 @@ import MatrixToggle from "@/components/MatrixToggle";
 import { useState } from "react";
 
 export default function Home() {
-  const [isMatrixActive, setIsMatrixActive] = useState(true);
+  const [isMatrixActive, setIsMatrixActive] = useState(false); // Desactivado temporalmente
 
   const {
     input,

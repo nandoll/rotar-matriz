@@ -1,0 +1,16 @@
+# Archivos de desarrollo
+__tests__/
+*.test.ts
+*.test.tsx
+*.test.js
+*.test.jsx
+jest.config.js
+jest.setup.js
+
+# Archivos de documentación
+README.md
+cap/
+
+# Archivos de configuración de desarrollo
+.eslintrc.json
+.prettierrc
