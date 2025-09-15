@@ -1,11 +1,9 @@
-/*
 import type { Metadata } from "next";
-import "./globals.css"; // <-- Eliminamos temporalmente la importación del CSS roto
-*/
+import "./globals.css"; // <-- Ahora importamos el CSS que acabamos de arreglar
 
-export const metadata = {
-  title: "Prueba de Despliegue",
-  description: "Probando el despliegue mínimo en Vercel",
+export const metadata: Metadata = {
+  title: "Prueba de Despliegue de CSS",
+  description: "Probando el despliegue con CSS corregido",
 };
 
 export default function RootLayout({
@@ -15,7 +13,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* Eliminamos las clases de fuentes personalizadas temporalmente */}
       <body>{children}</body>
     </html>
   );
