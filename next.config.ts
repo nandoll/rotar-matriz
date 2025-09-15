@@ -3,11 +3,11 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   // Configuración para export estático
-  output: "export",
-  trailingSlash: true,
-  images: {
-    unoptimized: true,
-  },
+  // output: "export",
+  // trailingSlash: true,
+  // images: {
+  //   unoptimized: true,
+  // },
   // Optimizaciones para producción
   compress: true,
   // Reducir uso de memoria
