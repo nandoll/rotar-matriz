@@ -1,19 +1,5 @@
 import type { Metadata } from "next";
-import { Fira_Code, Libre_Baskerville } from "next/font/google";
 import "./globals.css";
-
-const firaCode = Fira_Code({
-  variable: "--font-fira-code",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-});
-
-const libreBaskerville = Libre_Baskerville({
-  variable: "--font-libre-baskerville",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-});
 
 export const metadata: Metadata = {
   title: "Rotar Matriz - DELOSI",
@@ -28,11 +14,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${firaCode.variable} ${libreBaskerville.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

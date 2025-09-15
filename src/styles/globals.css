@@ -20,7 +20,7 @@
   }
 
   body {
-    font-family: var(--font-fira-code), "Fira Code", monospace;
+    font-family: "Fira Code", monospace;
     color: #14532d; /* green-900 */
     background-color: #f0fdf4; /* green-50 */
     min-height: 100vh;
@@ -43,19 +43,19 @@
 
   /* Libre Baskerville font classes */
   .libre-baskerville-regular {
-    font-family: var(--font-libre-baskerville), "Libre Baskerville", serif;
+    font-family: "Libre Baskerville", serif;
     font-weight: 400;
     font-style: normal;
   }
 
   .libre-baskerville-bold {
-    font-family: var(--font-libre-baskerville), "Libre Baskerville", serif;
+    font-family: "Libre Baskerville", serif;
     font-weight: 700;
     font-style: normal;
   }
 
   .libre-baskerville-regular-italic {
-    font-family: var(--font-libre-baskerville), "Libre Baskerville", serif;
+    font-family: "Libre Baskerville", serif;
     font-weight: 400;
     font-style: italic;
   }
