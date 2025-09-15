@@ -1,10 +1,11 @@
+/*
 import type { Metadata } from "next";
-import "./globals.css";
+import "./globals.css"; // <-- Eliminamos temporalmente la importación del CSS roto
+*/
 
-export const metadata: Metadata = {
-  title: "Rotar Matriz - DELOSI",
-  description:
-    "Aplicación para rotar matrices de tipo NxN en sentido anti-horario",
+export const metadata = {
+  title: "Prueba de Despliegue",
+  description: "Probando el despliegue mínimo en Vercel",
 };
 
 export default function RootLayout({
@@ -14,19 +15,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="antialiased">{children}</body>
+      {/* Eliminamos las clases de fuentes personalizadas temporalmente */}
+      <body>{children}</body>
     </html>
   );
 }
